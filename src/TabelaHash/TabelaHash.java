@@ -22,7 +22,13 @@ public class TabelaHash<E> {
         if (tabela[posicao] == null) tabela[posicao] = new ListaEstatica<E>();
         tabela[posicao].add(element);
     }
-
+    public void clear() {
+        tabela = new ListaEstatica[tamanho];
+    }
+    public void remove(E element) {
+        int posicao = h(element);
+        if (tabela[posicao] != null) tabela[posicao].remove(element);
+    }
 
     @Override
     public String toString() {

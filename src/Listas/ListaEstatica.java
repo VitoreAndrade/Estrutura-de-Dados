@@ -105,4 +105,5 @@ public class ListaEstatica<E> extends ListaA<E> {
         for (int i = 0; i < size(); i++) str += (i != size() - 1) ? elements[i] + ", " : elements[i];
         return str += "]";
     }
+
 }
