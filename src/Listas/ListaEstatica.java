@@ -1,11 +1,9 @@
 package Listas;
 
-import Abstracts.ListaA;
-import Interfaces.ColecaoI;
-
-public class ListaEstatica<E> extends ListaA<E> {
+public class ListaEstatica<E> {
     private E[] elements;
     private int initialCapacity;
+    private int count;
 
     public ListaEstatica() {
         novo();
@@ -18,12 +16,6 @@ public class ListaEstatica<E> extends ListaA<E> {
         clear();
     }
 
-    public ListaEstatica(ColecaoI<E> c) {
-        E[] objs = c.toArray();
-        if ((count = objs.length) != 0) elements = objs;
-        else novo();
-    }
-
     private void novo() {
         this.initialCapacity = 10;
         clear();
@@ -33,26 +25,30 @@ public class ListaEstatica<E> extends ListaA<E> {
         return (E[]) new Object[elements.length * 2];
     }
 
-    @Override
+    public boolean isEmpty() {
+        return size() == 0;
+    }
+
+    public int size() {
+        return count;
+    }
+
     public void clear() {
         elements = (E[]) new Object[this.initialCapacity];
         count = 0;
     }
 
-    @Override
-    public E[] toArray() {
-        return elements.clone();
-    }
-
-    @Override
     public E get(int index) {
         if (index < 0 || index >= count)
             throw new IndexOutOfBoundsException("Índice " + index + ", Comprimento " + count);
         return elements[index];
     }
 
-    @Override
-    public boolean add(int index, E element) {
+    public boolean add(E e) {
+        return add(count, e);
+    }
+
+    private boolean add(int index, E element) {
         if (index < 0 || index > count)
             throw new IndexOutOfBoundsException("Índice: " + index + ", Comprimento: " + count);
 
@@ -68,7 +64,6 @@ public class ListaEstatica<E> extends ListaA<E> {
         return true;
     }
 
-    @Override
     public E remove(int index) {
         if (index < 0 || index > count) return null;
 
@@ -79,19 +74,25 @@ public class ListaEstatica<E> extends ListaA<E> {
         return e;
     }
 
-    @Override
+    public E remove(Object o) {
+        if (!contains(o)) return null;
+        return remove(indexOf(o));
+    }
+
+    public boolean contains(Object o) {
+        return indexOf(o) >= 0;
+    }
+
     public int indexOf(Object o) {
         for (int i = 0; i < count; i++) if (elements[i].equals(o)) return i;
         return -1;
     }
 
-    @Override
     public int lastIndexOf(Object o) {
         for (int i = count; i >= 0; i--) if (elements[i].equals(o)) return i;
         return -1;
     }
 
-    @Override
     public E set(int index, E element) {
         if (index < 0 || index >= count)
             throw new IndexOutOfBoundsException("Índice " + index + ", Comprimento " + count);
@@ -105,5 +106,4 @@ public class ListaEstatica<E> extends ListaA<E> {
         for (int i = 0; i < size(); i++) str += (i != size() - 1) ? elements[i] + ", " : elements[i];
         return str += "]";
     }
-
 }
